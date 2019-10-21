@@ -2,16 +2,16 @@ import * as actions from "./actions";
 import Immutable from "immutable";
 
 const initialState = {
-  isMenuOpen: false,
+  isMenuOpen: true,
   isMenuClose: false,
   loading: false,
   data: {},
-  isLoggedin: false
+  isLoggedin: true
 };
 
 const openMenu = (state, action) => {
   debugger;
-  return { ...state, isMenuOpen: true };
+  return { ...state, isMenuOpen: action.isMenuOpen };
 };
 
 const handlers = {

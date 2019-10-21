@@ -41,8 +41,9 @@ const initialState = {
 //   return newState;
 // };
 const loginResponse = (state, action) => {
-  state = state.isLoggedin = true;
-  return { ...state, isLoggedin: true, isMenuOpen: true };
+  debugger;
+  const newState = { ...state, isMenuOpen: true, isLoggedin: true };
+  return newState;
 };
 const startLoading = (state, action) => {
   state = state.isLoggedin = false;

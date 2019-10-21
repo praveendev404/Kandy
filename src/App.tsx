@@ -19,7 +19,7 @@ import ChevronRightIcon from "@material-ui/icons/ChevronRight";
 import InboxIcon from "@material-ui/icons/MoveToInbox";
 import MailIcon from "@material-ui/icons/Mail";
 import { IThemeModel } from "../src/theme/theme";
-import { withProps } from "./props/withProps";
+import { withProps } from "./redux/props/withProps";
 
 import classNames from "classnames";
 
@@ -141,7 +141,7 @@ class App extends React.Component<IAppProps, IAppState> {
             <AppBar
               position="fixed"
               className={classNames(classes.appBar, {
-                [classes.appBarShift]: isMenuOpen
+                [classes.appBarShift]: isMenuOpen && isLoggedin
               })}
             >
               <Toolbar disableGutters={!isMenuOpen}>
@@ -157,7 +157,7 @@ class App extends React.Component<IAppProps, IAppState> {
                 </IconButton>
               </Toolbar>
             </AppBar>
-            {isLoggedin && (
+            {isLoggedin && isMenuOpen && (
               <Drawer
                 variant="permanent"
                 className={classNames(classes.drawer, {

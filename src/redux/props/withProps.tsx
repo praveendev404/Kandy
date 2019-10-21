@@ -1,6 +1,6 @@
 import { withStyles } from "@material-ui/core";
 import * as React from "react";
-import { IThemeModel } from "../theme/theme";
+import { IThemeModel } from "../../theme/theme";
 import { IPropsContextModel, PropsContext } from "./propsContext";
 
 const styles = (theme: IThemeModel) => ({

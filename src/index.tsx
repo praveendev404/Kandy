@@ -6,8 +6,8 @@ import * as serviceWorker from "./serviceWorker";
 import { Provider } from "react-redux";
 import store from "./redux/store/index";
 import "./index.css";
-import { makeAppContext } from "../src/props/makeAppContext";
-import { PropsContext } from "../src/props/propsContext";
+import { makeAppContext } from "./redux/props/makeAppContext";
+import { PropsContext } from "./redux/props/propsContext";
 
 // ReactDOM.render(<App />, document.getElementById('root'));
 

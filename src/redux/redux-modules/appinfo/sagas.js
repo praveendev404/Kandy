@@ -4,7 +4,7 @@ import * as actions from "./actions";
 function* openMenu(action) {
   try {
     debugger;
-    yield put({ type: actions.MENU_OPEN_START });
+    yield put({ type: actions.MENU_OPEN_START, isMenuOpen: action.isMenuOpen });
   } catch (error) {}
 }
 function* openMenuWatcher() {

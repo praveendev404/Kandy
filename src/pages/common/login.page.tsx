@@ -2,7 +2,7 @@ import * as React from "react";
 
 import Button from "@material-ui/core/Button";
 import TextInput from "../../elements/text-input";
-import { withProps } from "../../props/withProps";
+import { withProps } from "../../redux/props/withProps";
 import { mapDispatchToProps, mapStateToProps } from "./login.page.container";
 
 export interface ILoginPageProps {
