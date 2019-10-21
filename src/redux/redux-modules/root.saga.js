@@ -1,3 +1,4 @@
 import watchAppLogin from "./userinfo/sagas";
+import openMenuWatcher from "./appinfo/sagas";
 
-export default [...watchAppLogin];
+export default [...watchAppLogin, ...openMenuWatcher];

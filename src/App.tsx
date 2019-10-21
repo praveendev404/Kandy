@@ -133,6 +133,7 @@ class App extends React.Component<IAppProps, IAppState> {
   // }
   public render() {
     const { classes, theme, isLoggedin, isMenuOpen } = this.props;
+    debugger;
     return (
       <div className="App">
         <Router history={history}>

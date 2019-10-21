@@ -37,7 +37,6 @@ export const withProps = (
       // @ts-ignore
     }
     {(context: IPropsContextModel) => {
-      debugger;
       let Hoc = context[contract] as React.ComponentType;
       const coalescedInstanceName = props.instanceName || instanceName;
       if (coalescedInstanceName) {
