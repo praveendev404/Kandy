@@ -1,0 +1,388 @@
+import { CommonColors } from '@material-ui/core/colors/common';
+import { createMuiTheme, MuiThemeProvider, Theme as MuiTheme } from '@material-ui/core/styles';
+import { Palette } from '@material-ui/core/styles/createPalette';
+import React, { ReactNode } from 'react';
+
+export interface GradientOptionsModel {
+  greenBlueGrad: string;
+  orangePinkGrad: string;
+  blueGrad: string;
+  redPinkGrad: string;
+  purplePinkGrad: string;
+}
+
+/**
+ * ColorModel
+ */
+export interface ColorsModel extends CommonColors {
+  [s: string]: string;
+  mustardYellow: string;
+  green: string;
+  darkTeal: string;
+  teal: string;
+  red: string;
+  orange: string;
+  blue: string;
+  darkBlueGray: string;
+  blueGray: string;
+  whiteBlue: string;
+  lightThemeGray: string;
+  purple: string;
+  darkGray: string;
+  lightGray: string;
+  gray: string;
+  white: string;
+  lightText: string;
+  darkWhite: string;
+  fadedWhite: string;
+  offWhite: string;
+  lightBlack: string;
+  offBlack: string;
+  pink: string;
+  greenBlueGrad: string;
+  orangePinkGrad: string;
+  blueGrad: string;
+  redPinkGrad: string;
+  purplePinkGrad: string;
+  medicalAdvisors: string;
+  basePay: string;
+  lastStockGrant: string;
+  benefitsSubsidy: string;
+  lastBonus: string;
+  retirement: string;
+  earnings: string;
+  bonus: string;
+  stockActivity: string;
+  otherPrograms: string;
+  medical: string;
+  healthSavingsAccount: string;
+  prescriptionDrugs: string;
+  telemedicine: string;
+  dental: string;
+  vision: string;
+  lifeInsurance: string;
+  adAndDInsurance: string;
+  longTermDisability: string;
+  employeeAssistance: string;
+  flexSpendingAccount: string;
+  beyondTheWorkspace: string;
+  memberRewards: string;
+  energizeYou: string;
+  collegebound529plan: string;
+  businessTravelAccident: string;
+  orgChartBorder: string;
+  personalBestAward: string;
+  darkGrayishBlue: string;
+  greyBackgroundIcon: string;
+  lightGrayIcon: string;
+  calendarWeek: string;
+  outsideDay: string;
+  calendarBackground: string;
+  faintGray: string;
+  grayButtonClear: string;
+  brightOrange: string;
+  lightTextProfile: string;
+  whiteGray: string;
+  darkRed: string;
+  lightCheckboxGray: string;
+  cardLightBackgroundGrey: string;
+  borderLightGray: string;
+  successGreen: string;
+  linkBlue: string;
+}
+
+export interface PaletteModel extends Palette {
+  common: ColorsModel;
+}
+
+export interface ThemeModel extends MuiTheme {
+  palette: PaletteModel;
+}
+/**
+ * Colors
+ */
+
+const colors = {
+  mustardYellow: '#F7B500',
+  green: '#00DA48',
+  teal: '#00BFA5',
+  darkTeal: '#008573',
+  red: '#FF3C54',
+  orange: '#FF6D00',
+  blue: '#304FFE',
+  medical: '#00C853',
+  medicalAdvisors: '#00B8D4',
+  blueGray: '#2C3E51',
+  whiteBlue: '#3199D7',
+  darkBlueGray: '#22303F',
+  tableLineGray: '#DDE6EA',
+  profileLineGray: '#607D8B',
+  lightThemeGray: '#a5b3b7',
+  purple: '#6200EA',
+  gray: '#C7D1D5',
+  darkGray: '#22303F',
+  lightGray: '#E2E7EE',
+  white: '#FFFFFF',
+  darkWhite: '#F1F4F8',
+  fadedWhite: '#FFFFFF10',
+  offWhite: '#F2F2F2',
+  lightBlack: '#33495F',
+  offBlack: '#494949',
+  pink: '#ea108f',
+  greenBlueGrad: 'linear-gradient(to bottom, #45cda1 0%, #12998f 66%, #175c9e 100%)',
+  orangePinkGrad: 'linear-gradient(to bottom, #f0b017 0%, #eb823b 27%, #f2408c 100%)',
+  blueGrad: 'linear-gradient(to bottom, #00d1ff 0%, #1f42e8 53%, #3b7ad6 100%)',
+  redPinkGrad: 'linear-gradient(to bottom, #de2475 0%, #ff522e 100%)',
+  purplePinkGrad: 'linear-gradient(to bottom, #2e00ff 0%, #d603db 61%, #6305c4 100%)',
+  lightText: '#78909C',
+  basePay: '#00C853',
+  lastStockGrant: '#0091EA',
+  benefitsSubsidy: '#E94C36',
+  lastBonus: '#00BFA5',
+  retirement: '#FF6D00',
+  earnings: '#00C853',
+  bonus: '#00BFA5',
+  stockActivity: '#0091EA',
+  otherPrograms: '#6200EA',
+  healthSavingsAccount: '#FF3C54',
+  prescriptionDrugs: '#FF6D00',
+  telemedicine: '#FF6D00',
+  dental: '#304FFE',
+  vision: '#6200EA',
+  lifeInsurance: '#64DE18',
+  adAndDInsurance: '#C51162',
+  longTermDisability: '#FFAB00',
+  employeeAssistance: '#E94C36',
+  flexSpendingAccount: '#6200EA',
+  beyondTheWorkspace: '#FF6D00',
+  memberRewards: '#6200EA',
+  energizeYou: '#FF3C54',
+  collegebound529plan: '#64DE18',
+  businessTravelAccident: '#304FFE',
+  orgChartBorder: '#607D8B',
+  personalBestAward: '#565AF3',
+  yellow: '#FFAB00',
+  progressBar: '#141C26',
+  required: '#B5B2B1',
+  darkGrayishBlue: '#1D2836',
+  greyBackgroundIcon: '#2B3D4F',
+  lightGrayIcon: '#D8D8D8',
+  calendarWeek: '#ABC3CF',
+  outsideDay: '#F4F8F9',
+  calendarBackground: '#001A1D',
+  faintGray: '#8B9FA8',
+  whiteGray: '#607C8B',
+  grayButtonClear: '#2D3E51',
+  brightOrange: '#FA6400',
+  lightTextProfile: '#697B87',
+  darkRed: '#F50000',
+  lightCheckboxGray: '#5F7C89',
+  cardLightBackgroundGrey: '#233140',
+  borderLightGray: '#494C50',
+  successGreen: '#04FAD2',
+  linkBlue: '#0091FF',
+  imgBorder: '#2D3F52',
+};
+
+/**
+ * Fonts
+ */
+// tslint:disable-next-line:max-line-length
+const backupFonts =
+  '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif';
+const headerFontFamily = `"Roboto", ${backupFonts}`;
+const bodyFontFamily = `"Open Sans", ${backupFonts}`;
+
+const fontWeightLight = 300;
+const fontWeightRegular = 400;
+const fontWeightMedium = 500;
+
+/**
+ * Build theme
+ */
+// @ts-ignore
+const theme = createMuiTheme({
+  // Colors
+  palette: {
+    type: 'dark',
+    background: {
+      default: colors.darkGray,
+    },
+    primary: {
+      main: colors.teal,
+      contrastText: colors.white,
+    },
+    common: { ...colors },
+  },
+
+  // Typography
+  typography: {
+    fontWeightLight,
+    fontWeightRegular,
+    fontWeightMedium,
+    fontFamily: bodyFontFamily,
+    useNextVariants: true,
+    h1: {
+      fontFamily: headerFontFamily,
+      fontWeight: fontWeightRegular,
+      fontSize: '3.25rem',
+      lineHeight: 1.192307692,
+      letterSpacing: -0.001923077,
+    },
+    h2: {
+      fontFamily: headerFontFamily,
+      fontWeight: fontWeightRegular,
+      fontSize: '2.625rem',
+      lineHeight: 1.19047619,
+      letterSpacing: -0.002142857,
+    },
+    h3: {
+      fontFamily: headerFontFamily,
+      fontWeight: fontWeightRegular,
+      fontSize: '2.375rem',
+      lineHeight: 1.210526316,
+      letterSpacing: -0.001842105,
+    },
+    h4: {
+      fontFamily: headerFontFamily,
+      fontWeight: fontWeightMedium,
+      fontSize: '2rem',
+      lineHeight: 1.1875,
+      letterSpacing: -0.0021875,
+    },
+    h5: {
+      fontFamily: headerFontFamily,
+      fontWeight: fontWeightLight,
+      fontSize: '1.75rem',
+      letterSpacing: -0.002142857,
+      lineHeight: 1,
+    },
+    h6: {
+      fontFamily: headerFontFamily,
+      fontWeight: fontWeightMedium,
+      fontSize: '1.375rem',
+      letterSpacing: -0.001818182,
+      lineHeight: 1,
+    },
+    subtitle1: {
+      fontFamily: headerFontFamily,
+      fontWeight: fontWeightRegular,
+      fontSize: '	1.125rem',
+      lineHeight: 1.222222222,
+      letterSpacing: -0.002220249,
+    },
+    subtitle2: {
+      fontFamily: bodyFontFamily,
+      fontWeight: fontWeightRegular,
+      fontSize: '1.125rem',
+      lineHeight: 1.5625,
+      letterSpacing: 'normal',
+    },
+    body1: {
+      fontFamily: bodyFontFamily,
+      fontWeight: fontWeightRegular,
+      fontSize: '0.875rem',
+      lineHeight: 1.1875,
+      letterSpacing: 'normal',
+    },
+    body2: {
+      fontFamily: bodyFontFamily,
+      fontWeight: fontWeightRegular,
+      fontSize: '0.75rem',
+      lineHeight: 1.416666667,
+      letterSpacing: 0.001666667,
+    },
+    button: {
+      fontFamily: bodyFontFamily,
+      fontWeight: fontWeightRegular,
+      fontSize: '1.125rem',
+      lineHeight: 1.333333333,
+      letterSpacing: 'normal',
+    },
+    caption: {
+      fontFamily: bodyFontFamily,
+      fontWeight: fontWeightRegular,
+      // @ts-ignore
+      fontStyle: 'italic',
+      fontSize: '0.75rem',
+      lineHeight: 1.416666667,
+      letterSpacing: -0.0025,
+    },
+    overline: {
+      fontFamily: bodyFontFamily,
+      fontWeight: fontWeightRegular,
+      textTransform: 'uppercase',
+      fontSize: '0.875rem',
+      lineHeight: 1.357142857,
+      letterSpacing: 'normal',
+    },
+  },
+
+  // Overrides of Material UI built-in CSS
+  overrides: {
+    MuiTypography: {
+      gutterBottom: {
+        marginBottom: '1rem',
+      },
+    },
+    MuiDialog: {
+      paper: {
+        backgroundColor: colors.blueGray,
+      },
+    },
+    MuiDialogContent: {
+      root: {
+        '& div:not([role="presentation"]) > button, div:not([role="presentation"]) > button > span': {
+          backgroundColor: 'transparent',
+        },
+        '& div:not([role="presentation"]) > button': {
+          '&:hover': {
+            backgroundColor: `${colors.white}3F`,
+          },
+        },
+      },
+    },
+    MuiSvgIcon: {
+      root: {
+        color: 'fff',
+      },
+    },
+    MuiTable: {
+      root: {
+        backgroundColor: '#22303F !important',
+        border: 'none',
+        cellSpacing: 0,
+        borderSpacing: `0 12px`,
+      },
+    },
+    MuiTableCell: {
+      root: {
+        padding: `0 8px`,
+        borderBottom: 'none',
+      },
+    },
+  },
+});
+
+/**
+ * Provides an array of color names.
+ */
+export function colorOptions() {
+  const themeColors = theme.palette.common;
+  const colorArray: Array<string> = [];
+  Object.keys(themeColors).forEach((key: string) => {
+    colorArray.push(key);
+  });
+
+  return colorArray;
+}
+
+export interface ThemeProviderProps {
+  children?: ReactNode;
+}
+/**
+ * Theme provides a custom theme for Material UI.
+ */
+export const ThemeProvider = ({ children }: ThemeProviderProps) => (
+  <MuiThemeProvider theme={theme}>{children}</MuiThemeProvider>
+);
