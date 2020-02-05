@@ -1,0 +1,321 @@
+import axios from 'axios';
+import { toastMessage } from '../../common/toastMessage';
+import { MessageType } from '../../common/enumContainer';
+//import Loader from '../../Loader';
+import {
+  setStorage,
+  clearAll,
+  clearLocalStorage,
+} from '../helpers/storage.helper';
+import history from '../../redux/global/history';
+import { useForceUpdate } from '../../common/hooks/forceUpdate';
+var numberOfAjaxCAllPending = 0;
+
+const headers = {
+  Accept: 'application/json',
+  'Content-Type': 'application/json',
+  Authorization: `bearer ${localStorage.getItem('id_token')}`,
+};
+let isTokenRefreshSent = false;
+axios.interceptors.request.use(
+  function(config) {
+    let appSize =
+      document.getElementsByTagName('main')[0].className ==
+      'Component-appBar-2';
+    if (appSize) {
+      document.body.classList.add('loading-indicator');
+    } else {
+      document.body.classList.add('loading-indicator1');
+    }
+    numberOfAjaxCAllPending++;
+
+    let token = localStorage.getItem('id_token');
+    let expiresIn = localStorage.getItem('expires_in');
+
+    if (token) {
+      config.headers['Authorization'] = `Bearer ${token}`;
+      config.headers['Access-Control-Expose-Headers'] = '*';
+      config.headers['Accept'] = 'Application/json';
+      if (expiresIn && isTokenRefreshSent === false) {
+        if (parseInt(expiresIn) < 100) {
+          config.headers['RefreshToken'] = localStorage.getItem(
+            'refresh_token'
+          );
+          isTokenRefreshSent = true;
+        }
+      }
+    }
+    return config;
+  },
+  function(error) {
+    numberOfAjaxCAllPending--;
+    if (numberOfAjaxCAllPending <= 0) {
+      numberOfAjaxCAllPending = 0;
+      document.body.classList.remove('loading-indicator');
+      document.body.classList.remove('loading-indicator1');
+    }
+
+    if (error.response && error.response.status == 500) {
+      toastMessage(
+        MessageType.Error,
+        'Internal server error occured.Please try again...',
+        5000
+      );
+    } else toastMessage(MessageType.Error, error.message, 5000);
+    return Promise.reject(error);
+  }
+);
+
+// Add a response interceptor
+axios.interceptors.response.use(
+  function(response) {
+    numberOfAjaxCAllPending--;
+    if (numberOfAjaxCAllPending <= 0) {
+      numberOfAjaxCAllPending = 0;
+      document.body.classList.remove('loading-indicator');
+      document.body.classList.remove('loading-indicator1');
+    }
+    if (isTokenRefreshSent == true) {
+      let authorizeValue = response.headers['authorization'];
+      if (authorizeValue != null) {
+        let splitValue = authorizeValue.split('&');
+        if (splitValue != null) {
+          splitValue.forEach((value: string) => {
+            if (value.indexOf('token=') > -1) {
+              localStorage.removeItem('id_token');
+              localStorage.setItem('id_token', value.replace('token=', ''));
+            }
+            if (value.indexOf('RefreshToken=') > -1) {
+              localStorage.removeItem('refresh_token');
+              localStorage.setItem(
+                'refresh_token',
+                value.replace('RefreshToken=', '')
+              );
+            }
+            if (value.indexOf('ExpiresIn=') > -1) {
+              localStorage.removeItem('expires_in');
+              localStorage.setItem(
+                'expires_in',
+                value.replace('ExpiresIn=', '')
+              );
+            }
+          });
+          isTokenRefreshSent = false;
+        }
+      }
+    }
+    return response;
+  },
+  function(error) {
+    
+
+    numberOfAjaxCAllPending--;
+    if (numberOfAjaxCAllPending <= 0) {
+      numberOfAjaxCAllPending = 0;
+      document.body.classList.remove('loading-indicator');
+      document.body.classList.remove('loading-indicator1');
+    }
+    if (error.response && error.response.status == 401) {
+      clearLocalStorage();
+
+      clearAll();
+      toastMessage(MessageType.Error, 'Unauthorized', 5000);
+      history.push('/login');
+      window.location.reload();
+      // useForceUpdate();
+    } else if (error.response && error.response.status == 404) {
+      toastMessage(MessageType.Error, 'Not found', 5000);
+    } else if (error.response && error.response.status == 500) {
+      toastMessage(
+        MessageType.Error,
+        'Internal server error occured.Please try again...',
+        5000
+      );
+    } else if (error.response && error.response.status == 400) {
+      if (
+        error.response &&
+        error.response.data &&
+        error.response.data.error.toLowerCase() === 'invalid_grant'
+      ) {
+        toastMessage(MessageType.Error, 'Invalid username or password');
+      } else {
+        toastMessage(
+          MessageType.Error,
+          'Internal server error occured.Please try again...',
+          5000
+        );
+      }
+    } else if (
+      error.response &&
+      error.response.data &&
+      error.response.data.error.toLowerCase() === 'invalid_grant'
+    ) {
+      toastMessage(MessageType.Error, 'Invalid username or password');
+    } else toastMessage(MessageType.Error, error.message, 5000);
+    if (isTokenRefreshSent == true) {
+      if (error.headers) {
+        let authorizeValue = error.headers['authorization'];
+        if (authorizeValue != null) {
+          let splitValue = authorizeValue.split('&');
+          if (splitValue != null) {
+            splitValue.forEach((value: string) => {
+              if (value.indexOf('token=') > -1) {
+                localStorage.removeItem('id_token');
+                localStorage.setItem('id_token', value.replace('token=', ''));
+              }
+              if (value.indexOf('RefreshToken=') > -1) {
+                localStorage.removeItem('refresh_token');
+                localStorage.setItem(
+                  'refresh_token',
+                  value.replace('RefreshToken=', '')
+                );
+              }
+              if (value.indexOf('ExpiresIn=') > -1) {
+                localStorage.removeItem('expires_in');
+                localStorage.setItem(
+                  'expires_in',
+                  value.replace('ExpiresIn=', '')
+                );
+              }
+            });
+            isTokenRefreshSent = false;
+          }
+        }
+      }
+    }
+    return Promise.reject(error);
+  }
+);
+
+export const get = async (baseUrl: string, queryUrl: string) => {
+  const response: any = await axios.get(`${baseUrl}${queryUrl}`);
+
+  if (response.status === 200) {
+    const json = await response.data.result;
+    return { data: json };
+  }
+  if (response.status === 401) {
+    alert('UnAuthorise');
+  }
+  throw new Error('Error');
+};
+
+export const getLogOut = async (
+  baseUrl: string,
+  queryUrl: string,
+  token: string
+) => {
+  axios.defaults.headers.get['Authorization'] = `Bearer ${token}`; //for logout
+  axios.defaults.headers.get['Access-Control-Expose-Headers'] = '*';
+  axios.defaults.headers.get['Content-Type'] = 'Application/json';
+
+  const response: any = await axios.get(`${baseUrl}${queryUrl}`);
+
+  if (response.status === 200) {
+    const json = await response.data.result;
+    return { data: json };
+  }
+  if (response.status === 401) {
+    alert('UnAuthorise');
+  }
+  throw new Error('Error');
+};
+
+export const downloadFile = async (
+  baseUrl: string,
+  queryUrl: string,
+  fileName: string
+) => {
+  axios({
+    url: `${baseUrl}${queryUrl}`,
+    method: 'GET',
+    responseType: 'blob', // important
+  }).then(response => {
+    
+    if (response.data.size <= 140) {
+      toastMessage(
+        MessageType.Error,
+        'Internal server error occured.Please try again...',
+        5000
+      );
+    } else {
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', fileName);
+      document.body.appendChild(link);
+      link.click();
+    }
+  });
+};
+
+export const downloadFilePost = async (
+  baseUrl: string,
+  queryUrl: string,
+  data: any,
+  fileName: string
+) => {
+  axios({
+    url: `${baseUrl}${queryUrl}`,
+    method: 'POST',
+    responseType: 'blob', // important
+    data: data,
+  }).then(response => {
+    
+    if (response.data.size <= 140) {
+      toastMessage(
+        MessageType.Error,
+        'Internal server error occured.Please try again...',
+        5000
+      );
+    } else {
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', fileName);
+      document.body.appendChild(link);
+      link.click();
+    }
+  });
+};
+
+export const getCommonData = async (baseUrl: string, queryUrl: string) => {
+  const response: any = await axios.get(`${baseUrl}${queryUrl}`);
+
+  if (response.status === 200) {
+    const json = await response.data;
+    return { data: json };
+  }
+  if (response.status === 401) {
+    alert('Authorise');
+  }
+  throw new Error('Error');
+};
+
+export const post = async (baseUrl: string, queryUrl: string, model: any) => {
+  axios.defaults.headers.post['Content-Type'] = 'Application/json';
+
+  const response = await axios.post(`${baseUrl}${queryUrl}`, model);
+  if (response.status === 200) {
+    const json = response;
+    return { data: json };
+  }
+  if (response.status === 500) {
+  }
+  throw new Error('Error');
+};
+
+export const deleteItem = async (baseUrl: string, queryUrl: string) => {
+  // const response = await axios.delete(`${baseUrl}${queryUrl}`, {
+  //   headers: headers,
+  // });
+  axios.defaults.headers.post['Content-Type'] = 'Application/json';
+
+  const response = await axios.delete(`${baseUrl}${queryUrl}`);
+
+  if (response.status === 200) {
+    const json = response;
+    return { data: json };
+  }
+  throw new Error('Error');
+};
